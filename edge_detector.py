@@ -2,6 +2,7 @@
 import cv2 as cv
 import numpy as np 
 from matplotlib import pyplot as plt
+from sklearn import linear_model, datasets
 
 #Load image
 img = cv.imread('3.jpeg')
@@ -15,14 +16,32 @@ upperBoundarie = np.array([120, 255, 255], dtype = 'uint8')
 #Compute mask for image
 mask = cv.inRange(imgHSV, lowerBoundarie, upperBoundarie)
 
-edges = cv.Canny(mask, 400, 500)
-edges_two = cv.Canny(mask, 0, 1000)
+pixelInfo = cv.inRange(imgHSV, np.array(lowerBoundarie), np.array(upperBoundarie))
+#array_two = cv.inRange(mask, 0, 1)
+array = np.nonzero(pixelInfo)
+transposedArray = np.transpose(array)
+#print (transposedArray)
 
-plt.subplot(121),plt.imshow(img,cmap = 'gray')
-plt.title('Original Image'), plt.xticks([]), plt.yticks([])
-plt.subplot(122),plt.imshow(mask,cmap = 'gray')
-plt.title('Edge Image'), plt.xticks([]), plt.yticks([])
-# plt.subplot(122),plt.imshow(edges_two,cmap = 'gray')
-# plt.title('Edge_two Image'), plt.xticks([]), plt.yticks([])
+#print (array_two)
+print(type(array)) 
+print(type(transposedArray))
 
-plt.show()
+x = transposedArray[0]
+hola = x[0]
+print (x)
+print (hola)
+
+# ransac = linear_model.RANSACRegressor()
+# ransac.fit (X,y)
+# inlier_mask = ransac.inlier_mask_
+# outlier_mask = np.logical_not(inlier_mask)
+
+# # Predict data of estimated models
+# line_X = np.arange(X.min(), X.max())[:, np.newaxis]
+
+# line_y_ransac = ransac.predict(line_X)
+# # Compare estimated coefficients
+# print("Estimated coefficients (RANSAC):")
+# print( ransac.estimator_.coef_)
+
+
