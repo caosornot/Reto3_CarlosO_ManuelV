@@ -1,0 +1,4 @@
+sudo apt-get install ros-kinetic-turtlebot ros-kinetic-turtlebot-actions ros-kinetic-turtlebot-apps ros-kinetic-turtlebot-bringup ros-kinetic-turtlebot-calibration ros-kinetic-turtlebot-capabilities ros-kinetic-turtlebot-create ros-kinetic-turtlebot-dashboard ros-kinetic-turtlebot-description ros-kinetic-turtlebot-follower ros-kinetic-turtlebot-gazebo ros-kinetic-turtlebot-interactions ros-kinetic-turtlebot-interactive-markers ros-kinetic-turtlebot-msgs ros-kinetic-turtlebot-navigation ros-kinetic-turtlebot-rapps ros-kinetic-turtlebot-rviz-launchers ros-kinetic-turtlebot-simulator ros-kinetic-turtlebot-stage ros-kinetic-turtlebot-stdr ros-kinetic-turtlebot-teleop
+
+SOLUCION PROBLEMA DE NO MODULE NAMED ROPSKG
+export PYTHONPATH=$PYTHONPATH:/usr/lib/python2.7/dist-packages
