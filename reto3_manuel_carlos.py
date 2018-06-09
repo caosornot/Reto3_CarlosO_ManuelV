@@ -83,8 +83,8 @@ while True:
         #Calculate and print slope and intercept for the first line.
         firstSlope = firstRansac.estimator_.coef_
         firstIntercept = firstRansac.estimator_.intercept_
-        print (firstSlope)
-        print(firstIntercept)
+        # print (firstSlope)
+        # print(firstIntercept)
 
         #Delete first line
         i = 0
@@ -117,8 +117,8 @@ while True:
         #Calculate and print slope and intercept for the second line.
         secondSlope = secondRansac.estimator_.coef_
         secondIntercept = secondRansac.estimator_.intercept_
-        print (secondSlope)
-        print(secondIntercept)   
+        # print (secondSlope)
+        # print(secondIntercept)   
 
         #Find intercept between first line and second line
         xIntercept = (secondIntercept-firstIntercept)/(firstSlope-secondSlope)
@@ -146,10 +146,12 @@ while True:
         # plt.ylabel("Response")
         # plt.show()  
 
-        print(w)
-        print(h)
+        # print(w)
+        # princameraTarget
+        cameraTarget = (w/2)-xIntercept
+        print(cameraTarget)
 
-    #arduino = 
+        arduino = 
     k = cv.waitKey(5) & 0xFF
     if k == 27 or not ret:
         if not ret:
