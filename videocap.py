@@ -12,7 +12,7 @@ cap = cv2.VideoCapture(1)
 
 # Define the codec and create VideoWriter object
 fourcc = cv2.VideoWriter_fourcc(*'XVID')
-out = cv2.VideoWriter('hallway-sim.mp4',fourcc, 30.0, (640, 480))
+out = cv2.VideoWriter('hallway-sim-morning.mp4',fourcc, 30.0, (640, 480))
 
 while(cap.isOpened()):
     ret, frame = cap.read()

@@ -23,7 +23,7 @@ cv.setTrackbarPos('Quit', 'Line Follower Original', 0)
 
 
 #Start video capture
-videoPath = 'hallway-sim.mp4'
+videoPath = 'hallway-sim-morning.mp4'
 
 cap = cv.VideoCapture(videoPath)
 
@@ -151,7 +151,7 @@ while True:
         cameraTarget = (w/2)-xIntercept
         print(cameraTarget)
 
-        arduino = 
+        # arduino = 
     k = cv.waitKey(5) & 0xFF
     if k == 27 or not ret:
         if not ret:
