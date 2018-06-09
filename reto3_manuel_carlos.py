@@ -5,6 +5,8 @@ from matplotlib import pyplot as plt
 from sklearn import linear_model, datasets
 import imutils
 import math
+import serial, time
+
 
 # Create named window
 cv.namedWindow('Line Follower Original')
@@ -21,7 +23,7 @@ cv.setTrackbarPos('Quit', 'Line Follower Original', 0)
 
 
 #Start video capture
-videoPath = 'video_lab.mp4'
+videoPath = 'hallway-sim.mp4'
 
 cap = cv.VideoCapture(videoPath)
 
@@ -33,6 +35,8 @@ upperBoundarie = np.array([120, 255, 255], dtype = 'uint8')
 ret, frame = cap.read()
 cv.imshow('Line Follower Original', frame)
 
+#Define width of image
+
 # Loop through the video frames
 while True:
 
@@ -42,12 +46,15 @@ while True:
         ret, frame = cap.read()
         img = frame
         imgHSV = cv.cvtColor(img, cv.COLOR_BGR2HSV) 
-        angle = 180+90
+        angle = 0
         imgHSV = imutils.rotate(imgHSV, angle)
+        imgHSV = imutils.resize(imgHSV, width=320, height=240)
+        w = imgHSV.shape [1]
+        h = imgHSV.shape [0]
 
         #Define Color Boundaries
-        lowerBoundarie = np.array([35, 8, 0], dtype = 'uint8')
-        upperBoundarie = np.array([120, 255, 255], dtype = 'uint8')
+        lowerBoundarie = np.array([50, 35, 112], dtype = 'uint8')
+        upperBoundarie = np.array([105, 129, 131], dtype = 'uint8')
 
         #Apply mask and compute x & y coordinates (into a single array) of white pixels after applying the mask
         mask = cv.inRange(imgHSV, np.array(lowerBoundarie), np.array(upperBoundarie))
@@ -64,7 +71,7 @@ while True:
 
         #Start RANSAC algorithm
         # Robustly fit first linear model with RANSAC algorithm
-        firstRansac = linear_model.RANSACRegressor(residual_threshold=50)
+        firstRansac = linear_model.RANSACRegressor(residual_threshold=10)
         firstRansac.fit(X, y)
         firstinlier_mask = firstRansac.inlier_mask_
         firstoutlier_mask = np.logical_not(firstinlier_mask)
@@ -98,7 +105,7 @@ while True:
         y = y.reshape(-1, 1)
 
         # Robustly fit Second linear model with RANSAC algorithm
-        secondRansac = linear_model.RANSACRegressor(residual_threshold=50)
+        secondRansac = linear_model.RANSACRegressor(residual_threshold=10)
         secondRansac.fit(X, y)
         secondinlier_mask = secondRansac.inlier_mask_
         secondoutlier_mask = np.logical_not(secondinlier_mask)
@@ -115,11 +122,12 @@ while True:
 
         #Find intercept between first line and second line
         xIntercept = (secondIntercept-firstIntercept)/(firstSlope-secondSlope)
-        # xIntercept = frame.shape[1]-xIntercept
+        #xIntercept = frame.shape[1]-xIntercept
 
-        print (xIntercept)   
+        #print (xIntercept)   
 
         frameRot = imutils.rotate(frame, angle)
+        frameRot = imutils.resize(frameRot, width=320, height=240)
         cv.line(frameRot, (xIntercept, 0), (xIntercept, 1000), (255, 0, 0), 5)
         cv.imshow('Line Follower Original', frameRot)
         cv.line(mask, (xIntercept, 0), (xIntercept, 1000), (255, 0, 0), 5)
@@ -138,7 +146,10 @@ while True:
         # plt.ylabel("Response")
         # plt.show()  
 
-    # print(exitApp)
+        print(w)
+        print(h)
+
+    #arduino = 
     k = cv.waitKey(5) & 0xFF
     if k == 27 or not ret:
         if not ret:

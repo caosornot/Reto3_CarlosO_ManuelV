@@ -1,41 +1,58 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Feb 26 10:35:06 2018
+
+@author: DELL
+"""
+
 import cv2 as cv
 import numpy as np
 
 #Load image & create window
-img = cv.imread('5.jpeg')
-cv.namedWindow('Parameters')
+img = cv.imread('1.jpg')
+cv.namedWindow('Color Thresholds')
 imgHSV = cv.cvtColor(img, cv.COLOR_BGR2HSV)
 
 def nothing(x):
     pass
 
-#On/Off switch for HSV
-cv.createTrackbar('switch', 'Parameters',0,1,nothing)
+#On/Off switch
+cv.createTrackbar('switch', 'Color Thresholds',0,1,nothing)
 
-#Create trackbars for canny algorithm
-cv.createTrackbar('Canny_lower','Parameters', 0, 1000, nothing)
-cv.createTrackbar('Canny_upper','Parameters', 0, 1000, nothing)
+#Create trackbars for lower limits
+cv.createTrackbar('H_lower', 'Color Thresholds', 0,255, nothing)
+cv.createTrackbar('S_lower', 'Color Thresholds', 0, 255, nothing)
+cv.createTrackbar('V_lower', 'Color Thresholds', 0, 255, nothing)
+
+#Create trackbars or upper limits
+cv.createTrackbar('H_upper', 'Color Thresholds', 0,255, nothing)
+cv.createTrackbar('S_upper', 'Color Thresholds', 0, 255, nothing)
+cv.createTrackbar('V_upper', 'Color Thresholds', 0, 255, nothing)
+
+
 
 while(1):
     
     # Get trackbar positions for the five trackbars
-    s1 = cv.getTrackbarPos('switch','Parameters')
+    s1 = cv.getTrackbarPos('switch','Color Thresholds')
+   
+    lowerBlue = cv.getTrackbarPos('H_lower', 'Color Thresholds')
+    lowerGreen = cv.getTrackbarPos('S_lower', 'Color Thresholds')
+    lowerRed = cv.getTrackbarPos('V_lower', 'Color Thresholds')
 
-    lowerCanny = cv.getTrackbarPos('Canny_lower', 'Parameters')
-    upperCanny = cv.getTrackbarPos('Canny_lower', 'Parameters')
+    upperBlue = cv.getTrackbarPos('H_upper', 'Color Thresholds')
+    upperGreen = cv.getTrackbarPos('S_upper', 'Color Thresholds')
+    upperRed = cv.getTrackbarPos('V_upper', 'Color Thresholds')
     
     if s1:
-        #Define Color Boundaries
-        lowerBoundarie = np.array([35, 8, 0], dtype = 'uint8')
-        upperBoundarie = np.array([120, 255, 255], dtype = 'uint8')
-        #Compute mask for image
-        mask = cv.inRange(imgHSV, lowerBoundarie, upperBoundarie)
+        lower = np.array([lowerBlue, lowerGreen, lowerRed], dtype = 'uint8')
+        upper = np.array([upperBlue, upperGreen, upperRed], dtype = 'uint8')
+        mask = cv.inRange(imgHSV, lower, upper)
         out = cv.bitwise_and(imgHSV, imgHSV, mask=mask)
-        edges = cv.Canny(mask, 200, 500)
-        cv.imshow('Parameters2', edges)
+        cv.imshow('Color Thresholds2', out)
         cv.imshow('Original', img)
     else:
-        cv.imshow('Parameters', imgHSV)
+        cv.imshow('Color Thresholds', imgHSV)
         
     k = cv.waitKey(1) & 0xFF
     if k == 27:
