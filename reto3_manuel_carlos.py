@@ -24,7 +24,7 @@ cv.setTrackbarPos('Quit', 'Line Follower Original', 0)
 
 #Start video capture
 videoPath = 'hallway-sim-morning.mp4'
-cap = cv.VideoCapture(videoPath)
+cap = cv.VideoCapture(0)
 
 #Define color boundaries for image processing
 lowerBoundarie = np.array([35, 8, 0], dtype = 'uint8')
@@ -35,7 +35,7 @@ ret, frame = cap.read()
 cv.imshow('Line Follower Original', frame)
 
 # Serial Communication Arduino
-ArduinoPort = serial.Serial('/dev/ttyACM0', 115200, timeout=3)
+ArduinoPort = serial.Serial('COM7', 9600, timeout=3)
 time.sleep(2)
 
 #Define width of image
@@ -152,8 +152,10 @@ while True:
         # print(w)
         # princameraTarget
         cameraTarget = (w/2)-xIntercept
+        cameraTarget = int(cameraTarget)
         cameraTarget = str(cameraTarget)
         ArduinoPort.write((cameraTarget + '\n').encode('utf-8', 'ignore'))
+        time.sleep(0.01)
         print(cameraTarget)
 
         # arduino = 
